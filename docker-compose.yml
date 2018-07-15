@@ -1,0 +1,25 @@
+version: '3'
+services:
+  router:
+    image: "newtonlabs/fargate-router"
+    ports:
+     - "80:80"
+    links:
+     - client:client.service
+     - api:api.service
+     - rules:rules.service
+    command: /docker-start.sh
+  client:
+    image: "newtonlabs/fargate-react-client"
+    ports:
+     - "3000:3000"
+  api:
+    image: "newtonlabs/fargate-node-api"
+    ports:
+     - "8080:8080"
+    links:
+     - rules:rules.service
+  rules:
+    image: "newtonlabs/fargate-rules-engine"
+    ports:
+     - "9090:9090"
